@@ -2,6 +2,7 @@
 
 \usecolortheme{UD}
  
+\usepackage{bm}
 \usepackage{tikz}
 \usetikzlibrary{tikzmark}
 \usetikzlibrary{arrows,shapes,backgrounds}
@@ -104,8 +105,10 @@
     \begin{itemize}
         \item Fully connected layer cannot model nonlinear functions
         \item Nonlinear activations are used to provide nonlinearity
+        \item Key idea: they resemble a "neuron" firing
     \end{itemize}
     Examples:   
+    \vspace{-15pt}
     \begin{figure}
         \hspace*{-2cm}
         \includegraphics[width=1.33\textwidth]{activations}
@@ -126,9 +129,9 @@
 
     \vspace{-10pt}
     \begin{align*}
-        Y_{ij} &= K_{33}X_{i,j} + K_{32}X_{i,j+1} + K_{31}X_{i,j+2} + K_{23}X_{i+1,j} \\
+        Y_{ij} =\ & K_{33}X_{i,j} + K_{32}X_{i,j+1} + K_{31}X_{i,j+2} + K_{23}X_{i+1,j} \\
                &  + K_{22}X_{i+1,j+1} + K_{21}X_{i+1,j+2} + K_{13}X_{i+2,j} \\
-               & + K_{12}X_{i+2,j+1} + K_{11}X_{i+2,j+2}
+               & + K_{12}X_{i+2,j+1} + K_{11}X_{i+2,j+2} + b
     \end{align*}
 \end{frame}
 
@@ -143,4 +146,90 @@
         \includegraphics[width=\textwidth]{maxpool}
     \end{figure}
 \end{frame}
+
+\begin{frame}{Softmax Layer}
+    \begin{itemize}
+        \item Bounds output to [0,1]
+        \item Sum of output is 1
+        \item Useful for learning probability mass functions
+    \end{itemize}
+
+    Suppose $\mathbf{x} \in \mathbb{R}^n$, then 
+
+    \[
+        Softmax(x_i) = \frac{e^{x_i}}{\sum_{j=1}^{n} e^{x_j}}
+    \]
+
+\end{frame}
+
+\begin{frame}{Loss Function}
+    \begin{itemize}
+        \item A scalar error metric for the network
+        \item Necessary for training. Otherwise there is no optimization criteria
+    \end{itemize}
+    \hspace{-10pt}{\bf Popular examples:}
+
+    \vspace{20pt}
+    \begin{columns}
+        \column{0.5\textwidth}
+            {\bf Cross Entropy}
+
+            Suppose $\mathbf{x} \in \{0,1\}^n$ is the ground truth class labels
+            and $\hat{\mathbf{x}} \in [0,1]^n$ is the output of a \textit{classification} network, then
+            \[
+                E(\mathbf{x}, \hat{\mathbf{x}}) = -\sum_{i=1}^n x_i \ln(\hat{x}_i)
+            \]
+        \column{0.5\textwidth}
+            {\bf MSE}
+            Suppose $\mathbf{x} \in \mathbb{R}^n$ is the ground truth  
+            and $\hat{\mathbf{x}} \in \mathbb{R}^n$ is the output of a \textit{regression} network, then
+            \[
+                E(\mathbf{x}, \hat{\mathbf{x}}) = \frac{1}{n} ||\hat{\mathbf{x}} - \mathbf{x}||_2^2
+            \]
+            \vspace{10pt}
+
+    \end{columns}    
+
+\end{frame}
+
+\begin{frame}{Optimization}
+
+    \begin{itemize}
+        \item<1-> Suppose we have a feed-forward neural network with arbitrary tensor input $\bm{X}$, output (loss/error) $E$, and layers $L_1, L_2, \hdots, L_k$ (including loss layer).
+        \item<1-> How can we optimize such a complicated function?
+        \item<1-> There are many local minimums to get caught in
+        \begin{itemize}
+            \item<2-> {\bf Idea:} Look at each layer separately
+            \item<2-> Observe that $E = L_k(L_{k-1} (\hdots (L_1(\bm{X}))))$.
+            \item<2-> We can estimate the gradient of the entire network with the chain rule!
+        \end{itemize}
+    \end{itemize}
+
+    \begin{figure}
+        \includegraphics[width=.7\textwidth]{minimum}
+    \end{figure}
+\end{frame}
+
+\begin{frame}{Optimization: Stochastic Gradient Descent}
+    \begin{itemize}
+        %\item A popular first-order optimization method for DL
+        %\begin{itemize}
+        %    \item Second-order methods (i.e., quasi-Newton methods) are too slow for large networks and don't help accuracy much
+        %\end{itemize}
+        \item Create copies of your network
+        \begin{itemize}
+            \item Train on multiple data samples at once (i.e., a \textit{batch})
+            \item Average out the loss values across examples
+            \item Make sure the examples are selected \textit{randomly}
+        \end{itemize}
+        \item At each iteration, estimate the gradient of each layer w.r.t. the weights
+        \item Update the weights with the \textit{average} gradient over the batch with a scalar multiplier called the \textit{learning rate} (typically $<< 1$)
+    \end{itemize}
+
+    Suppose we have the weights of layer $L_i$, at iteration $j$, $\bm{W}_i^{(j)}$, with layer input $\bm{X}$, learning rate $\eta$, and $n$ examples per batch. Then the update step is:
+    \[
+        \bm{W}_i^{(j+1)} = \bm{W}_i^{(j)} - \frac{\eta}{n}\sum_{k=1}^n \nabla L_i(\bm{W}_i^{(j)}, \bm{X}_k)
+    \]
+\end{frame}
+
 \end{document}
