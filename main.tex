@@ -1,0 +1,49 @@
+\documentclass{beamer}
+
+\usecolortheme{UD}
+ 
+\usepackage{tikz}
+\usetikzlibrary{tikzmark}
+\usetikzlibrary{arrows,shapes,backgrounds}
+
+%\usepackage{enumitem}
+\usepackage[UKenglish]{babel}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{subfig}
+
+\newcommand\DrawBox[6]{% 
+	\begin{tikzpicture}[remember picture,overlay]
+	\draw[red, ultra thick]([yshift=#3,xshift=#4]pic cs:#1) rectangle ([yshift=#5,xshift=#6]pic cs:#2);
+\end{tikzpicture}%
+}
+
+\tikzstyle{every picture}+=[remember picture]
+\tikzstyle{na} = [baseline=-.5ex]
+
+\setbeamertemplate{itemize items}[circle]
+
+\institute{\includegraphics[height=1cm]{ud_logo}}
+
+% -----------------------------------------------------------------------------
+\graphicspath{ {figs/} }
+
+%Information to be included in the title page:
+\title{\bf{Background on Deep Learning}}
+\author{Nate Merrill}
+\subtitle{University of Delaware}
+
+\begin{document}
+ 
+\frame{\titlepage}
+
+
+\begin{frame}{}
+    	\begin{columns}
+		\column{0.5\textwidth}
+		\column{0.5\textwidth}
+	\end{columns}	
+\end{frame}
+
+
+\end{document}
