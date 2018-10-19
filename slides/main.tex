@@ -206,7 +206,7 @@
     \end{itemize}
 
     \begin{figure}
-        \includegraphics[width=.7\textwidth]{minimum}
+        \includegraphics[width=.5\textwidth]{minimum}
     \end{figure}
 \end{frame}
 
@@ -228,8 +228,43 @@
 
     Suppose we have the weights of layer $L_i$, at iteration $j$, $\bm{W}_i^{(j)}$, with layer input $\bm{X}$, learning rate $\eta$, and $n$ examples per batch. Then the update step is:
     \[
-        \bm{W}_i^{(j+1)} = \bm{W}_i^{(j)} - \frac{\eta}{n}\sum_{k=1}^n \nabla L_i(\bm{W}_i^{(j)}, \bm{X}_k)
+        \bm{W}_i^{(j+1)} = \bm{W}_i^{(j)} - \frac{\eta}{n}\sum_{k=1}^n \frac{\partial L_i(\bm{W}_i^{(j)}, \bm{X}_k)}{\partial \bm{W}_i^{(j)}}
     \]
+\end{frame}
+
+\begin{frame}{Implementation}
+    \vspace{-20pt}  
+    \begin{columns}
+       \column{0.5\textwidth}
+	Popular Libraries:
+	\begin{itemize}
+		\item {\bf TensorFlow}
+		\item Keras
+		\item Caffe (Caffe2 as well)
+		\item PyTorch
+		\item MXNet
+		\item Darknet
+	\end{itemize}
+ 	\column{0.5\textwidth}
+	\vspace{-50pt}
+	\begin{figure}
+		\includegraphics[width=.5\columnwidth]{tf}
+	\end{figure}
+    \end{columns}    
+    
+    \vspace{30pt}
+
+    The slides and code for the tutorial can be found at: 
+
+
+    \
+
+    \url{https://github.com/nmerrill67/DeepLearningTutorial}
+
+    \
+
+    We will step through the script together.
+    
 \end{frame}
 
 \end{document}
