@@ -4,6 +4,7 @@
 
 import tensorflow as tf
 import numpy as np
+from matplotlib import pyplot as plt
 
 # MNIST hand-written digits dataset
 mnist = tf.keras.datasets.mnist
@@ -78,8 +79,8 @@ if __name__ == '__main__':
 
     model = VAE()
     
-    batch = 32
-    iterations = 100000
+    batch = 256
+    iterations = 10000
 
     with tf.Session() as sess:
         sess.run(tf.global_variables_initializer())
@@ -93,3 +94,33 @@ if __name__ == '__main__':
                 print("Iteration %d: KLD = %f, RecLoss = %f" % (i, kld, rec_loss))
 
 
+        # display a 30x30 2D manifold of digits
+        n = 30
+        figure = np.zeros((28 * n, 28 * n))
+        # linearly spaced coordinates corresponding to the 2D plot
+        # of digit classes in the latent space
+        grid_x = np.linspace(-4, 4, n)
+        grid_y = np.linspace(-4, 4, n)[::-1]
+
+        for i, yi in enumerate(grid_y):
+            for j, xi in enumerate(grid_x):
+                z_sample = np.array([[xi, yi]])
+                x_decoded = sess.run(model.rec, 
+                        feed_dict={model.z: z_sample})
+                digit = x_decoded[0].reshape(28, 28)
+                figure[i * 28: (i + 1) * 28,
+                       j * 28: (j + 1) * 28] = digit
+
+        plt.figure(figsize=(10, 10))
+        start_range = 28 // 2
+        end_range = (n - 1) * 28 + start_range + 1
+        pixel_range = np.arange(start_range, end_range, 28)
+        sample_range_x = np.round(grid_x, 1)
+        sample_range_y = np.round(grid_y, 1)
+        plt.xticks(pixel_range, sample_range_x)
+        plt.yticks(pixel_range, sample_range_y)
+        plt.xlabel("z[0]")
+        plt.ylabel("z[1]")
+        plt.imshow(figure, cmap='Greys_r')
+        plt.savefig("latent.png")
+        plt.show()
