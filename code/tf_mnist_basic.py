@@ -1,4 +1,4 @@
-#/usr/bin/env python3
+#!/usr/bin/env python3
 
 import tensorflow as tf
 mnist = tf.keras.datasets.mnist
