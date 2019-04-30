@@ -137,7 +137,7 @@
 
 \begin{frame}{Max Pooling Layer}
     \begin{itemize}
-        \item Useful for viewpoint invariance
+        \item Useful for translational invariance
         \item Similar operation to convolution
     \end{itemize}
 
@@ -175,7 +175,8 @@
             {\bf Cross Entropy}
 
             Suppose $\mathbf{x} \in \{0,1\}^n$ is the ground truth class labels
-            and $\hat{\mathbf{x}} \in [0,1]^n$ is the output of a \textit{classification} network, then
+            and $\hat{\mathbf{x}} \in [0,1]^n$ s.t. $\sum_{i=1}^n\hat{x}_i = 1$
+            is the output of a \textit{classification} network, then
             \[
                 E(\mathbf{x}, \hat{\mathbf{x}}) = -\sum_{i=1}^n x_i \ln(\hat{x}_i)
             \]
@@ -197,7 +198,7 @@
     \begin{itemize}
         \item<1-> Suppose we have a feed-forward neural network with arbitrary tensor input $\bm{X}$, output (loss/error) $E$, and layers $L_1, L_2, \hdots, L_k$ (including loss layer).
         \item<1-> How can we optimize such a complicated function?
-        \item<1-> There are many local minimums to get caught in
+        \item<1-> There are many local minima to get caught in
         \begin{itemize}
             \item<2-> {\bf Idea:} Look at each layer separately
             \item<2-> Observe that $E = L_k(L_{k-1} (\hdots (L_1(\bm{X}))))$.
